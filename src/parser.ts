@@ -46,23 +46,14 @@ export function recursiveParse(
 }
 
 export function templating(data: Parsed[], templateOutput: string) {
-  data.forEach((d) => {
+  return data.reduce((output, d) => {
     const outputType = d.props
       .map((p, index) => {
         const format = `\t${p.key}: ${p.type};`;
-
-        if (index === d.props.length - 1) {
-          return `${format}\n`;
-        }
-
-        return format;
+        return index === d.props.length - 1 ? `${format}\n` : format;
       })
       .join("\n");
 
-    const template = `export interface ${d.interface} {\n${outputType}}\n`;
-
-    templateOutput = `${templateOutput}${template}\n`;
-  });
-
-  return templateOutput;
+    return `${output}export interface ${d.interface} {\n${outputType}}\n\n`;
+  }, templateOutput);
 }
