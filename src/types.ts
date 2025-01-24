@@ -3,7 +3,7 @@ export type Parsed = {
   props: Record<string, string>[];
 };
 
-export type Params = string | Record<string, string>;
+export type Params = Record<string, string> | string | undefined;
 
 export type PluralOptions = {
   plural?: boolean;
