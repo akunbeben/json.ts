@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "json-to-ts",
+      "name": "json.ts",
       "devDependencies": {
         "@types/bun": "latest",
       },
