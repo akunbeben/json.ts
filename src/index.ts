@@ -52,12 +52,16 @@ async function run({
     payload = new URLSearchParams(payload).toString();
   }
 
+  await Bun.write(Bun.stdout, `[INFO] Fetching URL ...\n`);
+
   const formatURL = !payload ? url : `${url}?${payload}`;
   const res = await fetch(formatURL);
 
   if (!res.ok) {
     throw new Error("Invalid URL");
   }
+
+  await Bun.write(Bun.stdout, `[INFO] Fetch completed\n`);
 
   const data = await res.json();
 
@@ -82,5 +86,8 @@ async function run({
 
   writeToFile(results, templateOutput, writer).finally(() => writer.end());
 
-  await Bun.write(Bun.stdout, "Lorem ipsum\n");
+  await Bun.write(
+    Bun.stdout,
+    `[INFO] Generated ${resource} in ${outDir}/${resource}.ts\n`,
+  );
 }
