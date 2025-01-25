@@ -1,4 +1,4 @@
-# json-to-ts
+# json.t
 
 To install dependencies:
 

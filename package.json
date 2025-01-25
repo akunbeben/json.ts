@@ -1,5 +1,5 @@
 {
-  "name": "json-to-ts",
+  "name": "json.ts",
   "module": "src/index.ts",
   "type": "module",
   "devDependencies": {

@@ -24,7 +24,12 @@ const { values } = parseArgs({
   allowPositionals: true,
 });
 
-const { url, payload, resource, outDir } = values;
+const {
+  url,
+  payload = undefined,
+  resource = "default",
+  outDir = "./out",
+} = values;
 
 run({
   url: `${url}`,
