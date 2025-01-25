@@ -2,11 +2,17 @@ import type { Parsed } from "./types";
 import { normalize } from "./util";
 
 export function recursiveParse(
-  data: Record<string, any>,
+  data: Record<string, any> | Record<number, any>[],
   resource: string,
   results: Parsed[] = [],
   processed: Set<string> = new Set(),
 ): Parsed[] {
+  if (Array.isArray(data)) {
+    recursiveParse(data[0], resource, results);
+
+    return results;
+  }
+
   if (processed.has(resource)) return results;
   processed.add(resource);
 
