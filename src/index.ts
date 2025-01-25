@@ -1,7 +1,6 @@
-import { write } from "bun";
 import type { Params, Parsed } from "./types";
 import { normalize } from "./util";
-import { recursiveParse, templating } from "./parser";
+import { recursiveParse, writeToFile } from "./parser";
 import { parseArgs } from "util";
 
 const { values } = parseArgs({
@@ -31,7 +30,7 @@ const {
   outDir = "./out",
 } = values;
 
-run({
+await run({
   url: `${url}`,
   payload,
   resource: `${resource}`,
@@ -54,7 +53,6 @@ async function run({
   }
 
   const formatURL = !payload ? url : `${url}?${payload}`;
-
   const res = await fetch(formatURL);
 
   if (!res.ok) {
@@ -79,7 +77,10 @@ async function run({
 
   const templateOutput = "";
 
-  await write(`${outDir}/${resource}.ts`, templating(results, templateOutput));
+  const file = Bun.file(`${outDir}/${resource}.ts`);
+  const writer = file.writer();
 
-  return;
+  writeToFile(results, templateOutput, writer).finally(() => writer.end());
+
+  await Bun.write(Bun.stdout, "Lorem ipsum\n");
 }

@@ -1,3 +1,4 @@
+import type { FileSink } from "bun";
 import type { Parsed } from "./types";
 import { normalize } from "./util";
 
@@ -51,8 +52,12 @@ export function recursiveParse(
   return results;
 }
 
-export function templating(data: Parsed[], templateOutput: string) {
-  return data.reduce((output, d) => {
+export async function writeToFile(
+  data: Parsed[],
+  templateOutput: string,
+  writer: FileSink,
+) {
+  for (const d of data) {
     const outputType = d.props
       .map((p, index) => {
         const format = `\t${p.key}: ${p.type};`;
@@ -60,6 +65,10 @@ export function templating(data: Parsed[], templateOutput: string) {
       })
       .join("\n");
 
-    return `${output}export interface ${d.interface} {\n${outputType}}\n\n`;
-  }, templateOutput);
+    writer.write(
+      `${templateOutput}export interface ${d.interface} {\n${outputType}}\n\n`,
+    );
+
+    await writer.flush();
+  }
 }
