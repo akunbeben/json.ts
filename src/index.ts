@@ -79,7 +79,7 @@ async function run({
 
   const templateOutput = "";
 
-  await write(`${outDir}/types.ts`, templating(results, templateOutput));
+  await write(`${outDir}/${resource}.ts`, templating(results, templateOutput));
 
   return;
 }
